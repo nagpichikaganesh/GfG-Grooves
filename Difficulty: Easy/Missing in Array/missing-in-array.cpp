@@ -1,6 +1,4 @@
 //{ Driver Code Starts
-// Initial template for C++
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -9,33 +7,56 @@ using namespace std;
 // User function template for C++
 class Solution {
   public:
+    int missingNumber(vector<int>& arr) {
+        // code here
+        int n = arr.size(); // Get the size of the array
 
-    // Note that the size of the array is n-1
-    int missingNumber(int n, vector<int>& arr) {
-        int sum = 0;
-        for(int i = 1; i <= n; i++){
-            sum += i;
+        // Step 1: Mark the visited numbers
+        for (int i = 0; i < n; i++) {
+            int index = abs(arr[i]) - 1; // Get the index to mark
+            
+            // Only mark if it's within bounds and not already negative
+            if (index < n && arr[index] > 0) {
+                arr[index] = -arr[index]; // Mark as visited by negating the value at that index
+            }
+        }
+
+        // Step 2: Find the first index that has a positive value
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > 0) {
+                return i + 1; // Return the missing number (1-based index)
+            }
+        }
+
+        // If no missing number found, return the size of the array + 1
+        return n + 1; // If all numbers are present
+
     }
-    
-    return sum - accumulate(arr.begin(), arr.end(), 0);
-    }
-};
+    };
 
 //{ Driver Code Starts.
 
 int main() {
     int t;
     cin >> t;
+    cin.ignore(); // to ignore the newline after the integer input
     while (t--) {
         int n;
-        cin >> n;
+        vector<int> a;
+        string input;
 
-        vector<int> arr(n - 1);
-        for (int i = 0; i < n - 1; ++i)
-            cin >> arr[i];
+        // Input format: first number n followed by the array elements
+        getline(cin, input);
+        stringstream ss(input);
+        int num;
+        while (ss >> num)
+            a.push_back(num);
+
         Solution obj;
-        cout << obj.missingNumber(n, arr) << "\n";
+        cout << obj.missingNumber(a) << endl;
     }
+
     return 0;
 }
+
 // } Driver Code Ends
